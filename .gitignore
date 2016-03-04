@@ -1,0 +1,7 @@
+.DS_Store
+.codekit-cache
+config.codekit
+composer.lock
+vendor/*
+.idea
+node_modules

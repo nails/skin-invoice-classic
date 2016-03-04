@@ -1,0 +1,35 @@
+{
+    "name": "nailsapp/skin-invoice-classic",
+    "keywords": ["Nails", "Invoice Module", "Classic Invoice Skin"],
+    "homepage": "http://nailsapp.co.uk/invoice/skin/classic",
+    "description": "This is the Classic invoice skin for the Nails Invoice & Payments module",
+    "license": "MIT",
+    "authors":
+    [
+        {
+            "name": "Pablo de la Pena",
+            "email": "p@nailsapp.co.uk",
+            "homepage": "http://nailsapp.co.uk",
+            "role": "Developer"
+        }
+    ],
+    "support":
+    {
+        "email": "hello@nailsapp.co.uk"
+    },
+    "require":
+    {
+    },
+    "extra":
+    {
+        "nails" :
+        {
+            "name": "Classic Skin",
+            "type": "skin",
+            "forModule": "nailsapp/module-invoice",
+            "subType": "invoice",
+            "data": {
+            }
+        }
+    }
+}
