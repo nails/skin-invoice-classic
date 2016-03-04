@@ -5,3 +5,4 @@ composer.lock
 vendor/*
 .idea
 node_modules
+assets/bower_components
