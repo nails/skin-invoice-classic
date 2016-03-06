@@ -113,7 +113,7 @@ header {
         span {
             color: #5D6975;
             text-align: right;
-            width: 52px;
+            width: 75px;
             margin-right: 10px;
             display: inline-block;
             font-size: 0.8em;
@@ -136,6 +136,9 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
     margin-bottom: 20px;
+    td {
+        vertical-align: top;
+    }
 }
 table.table {
     tr:nth-child(2n-1) td {
@@ -144,6 +147,7 @@ table.table {
     th,
     td {
         text-align: center;
+        vertical-align: middle;
     }
     th {
         padding: 5px 20px;
@@ -170,7 +174,16 @@ table.table {
     }
 }
 #notices {
-    .notice {
+    margin: 1em;
+    margin-top: 3em;
+    border: 1px solid #E0E0E0;
+    .notice-header {
+        padding: 0.5em;
+        background: #F5F5F5;
+        font-weight: bold;
+    }
+    .notice-body {
+        padding: 0.5em;
         color: #5D6975;
         font-size: 1.2em;
     }

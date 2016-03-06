@@ -94,16 +94,56 @@
                             <td>
                                 <div id="project">
                                     <div>
-                                        <span>CLIENT</span>
-                                        @todo CUSTOMER NAME
+                                        <span>CUSTOMER</span>
+                                        <?=$invoice->customer->label?>
                                     </div>
-                                    <div>
-                                        <span>ADDRESS</span>
-                                        @todo CUSTOMER ADDRESS
-                                    </div>
+                                    <?php
+
+                                    if (!empty($invoice->customer->vat_number)) {
+
+                                        ?>
+                                        <div>
+                                            <span>VAT NUMBER</span>
+                                            <?=$invoice->customer->vat_number?>
+                                        </div>
+                                        <?php
+                                    }
+
+                                    $aAddress = array(
+                                        $invoice->customer->billing_address->line_1,
+                                        $invoice->customer->billing_address->line_2,
+                                        $invoice->customer->billing_address->town,
+                                        $invoice->customer->billing_address->county,
+                                        $invoice->customer->billing_address->postcode,
+                                        $invoice->customer->billing_address->country
+                                    );
+                                    $aAddress = array_filter($aAddress);
+
+                                    if (!empty($aAddress)) {
+
+                                        ?>
+                                        <div>
+                                            <span>ADDRESS</span>
+                                            <?=implode('<br />', $aAddress)?>
+                                        </div>
+                                        <?php
+                                    }
+
+                                    ?>
                                     <div>
                                         <span>EMAIL</span>
-                                        @todo CUSTOMER EMAIL
+                                        <?php
+
+                                        if (!empty($invoice->customer->billing_email)) {
+
+                                            echo $invoice->customer->billing_email;
+
+                                        } else {
+
+                                            echo $invoice->customer->email;
+                                        }
+
+                                        ?>
                                     </div>
                                     <div>
                                         <span>DATE</span>
@@ -117,10 +157,11 @@
                             </td>
                             <td>
                                 <div id="company" class="clearfix">
-                                    <div>@todo BUSINESS NAME</div>
-                                    <div>@todo BUSINESS ADDRESS</div>
-                                    <div>@todo BUSINESS PHONE</div>
-                                    <div>@todo BUSINESS EMAIL</div>
+                                    <?=$business->name ? '<div>' . $business->name . '</div>' : ''?>
+                                    <?=$business->address ? '<div>' . nl2br($business->address) . '</div>' : ''?>
+                                    <?=$business->telephone ? '<div>' . $business->telephone . '</div>' : ''?>
+                                    <?=$business->email ? '<div>' . $business->email . '</div>' : ''?>
+                                    <?=$business->vat_number ? '<div>VAT: ' . $business->vat_number . '</div>' : ''?>
                                 </div>
                             </td>
                         </tr>
@@ -134,6 +175,7 @@
                             <th class="desc">DESCRIPTION</th>
                             <th>PRICE</th>
                             <th>QTY</th>
+                            <th>TAX</th>
                             <th>TOTAL</th>
                         </tr>
                     </thead>
@@ -154,6 +196,9 @@
                                 <td class="qty">
                                     <?=$oItem->quantity?>
                                 </td>
+                                <td class="tax">
+                                    <?=$oItem->tax->rate?>%
+                                </td>
                                 <td class="total">
                                     <?=$oItem->totals->localised_formatted->grand?>
                                 </td>
@@ -163,19 +208,19 @@
 
                         ?>
                         <tr>
-                            <td colspan="3">SUBTOTAL</td>
+                            <td colspan="4">SUBTOTAL</td>
                             <td class="total">
                                 <?=$invoice->totals->localised_formatted->sub?>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="3">TAX</td>
+                            <td colspan="4">TAX</td>
                             <td class="total">
                                 <?=$invoice->totals->localised_formatted->tax?>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="3" class="grand total">GRAND TOTAL</td>
+                            <td colspan="4" class="grand total">GRAND TOTAL</td>
                             <td class="grand total">
                                 <?=$invoice->totals->localised_formatted->grand?>
                             </td>
@@ -188,8 +233,8 @@
 
                     ?>
                     <div id="notices">
-                        <div>NOTICE:</div>
-                        <div class="notice"><?=$invoice->additional_text?></div>
+                        <div class="notice-header">ADDITIONAL INFORMATION</div>
+                        <div class="notice-body"><?=$invoice->additional_text?></div>
                     </div>
                     <?php
                 }
