@@ -197,7 +197,7 @@
                                     <?=$oItem->quantity?>
                                 </td>
                                 <td class="tax">
-                                    <?=$oItem->tax->rate?>%
+                                    <?=!empty($oItem->tax) ? $oItem->tax->rate : 0?>%
                                 </td>
                                 <td class="total">
                                     <?=$oItem->totals->localised_formatted->grand?>
@@ -229,12 +229,50 @@
                 </table>
                 <?php
 
+                if ($invoice->refunds->count) {
+
+                    ?>
+                    <div class="refunds">
+                        <div class="refunds__header">REFUNDS</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="text-left">Reference</th>
+                                    <th class="text-left">Reason</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+
+                                foreach ($invoice->refunds->data as $oRefund) {
+
+                                    if (in_array($oRefund->status->id, array('COMPLETE', 'PROCESSING'))) {
+                                        ?>
+                                        <tr>
+                                            <td class="text-left"><?=$oRefund->ref?></td>
+                                            <td class="text-left"><?=$oRefund->reason?></td>
+                                            <td><?=$oRefund->amount->localised_formatted?></td>
+                                            <td><?=toUserDateTime($oRefund->created)?></td>
+                                        </tr>
+                                        <?php
+                                    }
+                                }
+
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <?php
+                }
+
                 if (!empty($invoice->additional_text)) {
 
                     ?>
-                    <div id="notices">
-                        <div class="notice-header">ADDITIONAL INFORMATION</div>
-                        <div class="notice-body"><?=$invoice->additional_text?></div>
+                    <div class="notices">
+                        <div class="notices__header">ADDITIONAL INFORMATION</div>
+                        <div class="notices__body"><?=$invoice->additional_text?></div>
                     </div>
                     <?php
                 }

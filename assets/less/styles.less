@@ -110,11 +110,17 @@ header {
     }
     #project {
         margin-left: 1.5em;
+        div {
+            padding-left: 85px;
+            position: relative;
+        }
         span {
             color: #5D6975;
             text-align: right;
             width: 75px;
-            margin-right: 10px;
+            position: absolute;
+            left:0;
+            top: 2px;
             display: inline-block;
             font-size: 0.8em;
         }
@@ -173,18 +179,38 @@ table.table {
         text-align: left;
     }
 }
-#notices {
+.refunds,
+.notices {
     margin: 1em;
     margin-top: 3em;
     border: 1px solid #E0E0E0;
-    .notice-header {
+    &__header {
         padding: 0.5em;
         background: #F5F5F5;
         font-weight: bold;
     }
-    .notice-body {
+    &__body {
         padding: 0.5em;
         color: #5D6975;
         font-size: 1.2em;
+    }
+}
+.refunds {
+    table {
+        margin: 0;
+        th,
+        td {
+            padding: 0.5em;
+            text-align: center;
+            border-bottom: 1px solid #ECECEC;
+            &.text-left {
+                text-align: left;
+            }
+        }
+        tr:last-child {
+            td {
+                border: none;
+            }
+        }
     }
 }
