@@ -173,10 +173,10 @@
                     <thead>
                         <tr>
                             <th class="desc">DESCRIPTION</th>
-                            <th>PRICE</th>
-                            <th>QTY</th>
-                            <th>TAX</th>
-                            <th>TOTAL</th>
+                            <th class="price">PRICE</th>
+                            <th class="qty">QTY</th>
+                            <th class="tax">TAX</th>
+                            <th class="total">TOTAL</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -190,11 +190,18 @@
                                     <?=$oItem->label?>
                                     <div><?=$oItem->body?></div>
                                 </td>
-                                <td class="unit">
+                                <td class="price">
                                     <?=$oItem->unit_cost->localised_formatted?>
                                 </td>
                                 <td class="qty">
-                                    <?=$oItem->quantity?>
+                                    <?php
+
+                                    echo $oItem->quantity;
+                                    if ($oItem->unit->id !== 'NONE') {
+                                        echo ' ' . $oItem->unit->label;
+                                    }
+
+                                    ?>
                                 </td>
                                 <td class="tax">
                                     <?=!empty($oItem->tax) ? $oItem->tax->rate : 0?>%
@@ -207,19 +214,19 @@
                         }
 
                         ?>
-                        <tr>
+                        <tr class="total sub">
                             <td colspan="4">SUBTOTAL</td>
                             <td class="total">
                                 <?=$invoice->totals->localised_formatted->sub?>
                             </td>
                         </tr>
-                        <tr>
+                        <tr class="total tax">
                             <td colspan="4">TAX</td>
                             <td class="total">
                                 <?=$invoice->totals->localised_formatted->tax?>
                             </td>
                         </tr>
-                        <tr>
+                        <tr class="total grand">
                             <td colspan="4" class="grand total">GRAND TOTAL</td>
                             <td class="grand total">
                                 <?=$invoice->totals->localised_formatted->grand?>
