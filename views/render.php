@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>
             <?=$invoice->ref?> - <?=APP_NAME?>
         </title>
@@ -191,7 +191,7 @@
                                     <div><?=$oItem->body?></div>
                                 </td>
                                 <td class="price">
-                                    <?=$oItem->unit_cost->localised_formatted?>
+                                    <?=html_entity_decode($oItem->unit_cost->formatted)?>
                                 </td>
                                 <td class="qty">
                                     <?php
@@ -207,7 +207,7 @@
                                     <?=!empty($oItem->tax) ? $oItem->tax->rate : 0?>%
                                 </td>
                                 <td class="total">
-                                    <?=$oItem->totals->localised_formatted->grand?>
+                                    <?=html_entity_decode($oItem->totals->formatted->grand)?>
                                 </td>
                             </tr>
                             <?php
@@ -217,19 +217,19 @@
                         <tr class="total sub">
                             <td colspan="4">SUBTOTAL</td>
                             <td class="total">
-                                <?=$invoice->totals->localised_formatted->sub?>
+                                <?=$invoice->totals->formatted->sub?>
                             </td>
                         </tr>
                         <tr class="total tax">
                             <td colspan="4">TAX</td>
                             <td class="total">
-                                <?=$invoice->totals->localised_formatted->tax?>
+                                <?=$invoice->totals->formatted->tax?>
                             </td>
                         </tr>
                         <tr class="total grand">
                             <td colspan="4" class="grand total">GRAND TOTAL</td>
                             <td class="grand total">
-                                <?=$invoice->totals->localised_formatted->grand?>
+                                <?=$invoice->totals->formatted->grand?>
                             </td>
                         </tr>
                     </tbody>
@@ -260,7 +260,7 @@
                                         <tr>
                                             <td class="text-left"><?=$oRefund->ref?></td>
                                             <td class="text-left"><?=$oRefund->reason?></td>
-                                            <td><?=$oRefund->amount->localised_formatted?></td>
+                                            <td><?=$oRefund->amount->formatted?></td>
                                             <td><?=toUserDateTime($oRefund->created)?></td>
                                         </tr>
                                         <?php
