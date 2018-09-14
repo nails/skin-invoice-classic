@@ -1,5 +1,5 @@
 {
-    "name": "nailsapp/skin-invoice-classic",
+    "name": "nails/skin-invoice-classic",
     "keywords": ["Nails", "Invoice Module", "Classic Invoice Skin"],
     "homepage": "http://nailsapp.co.uk/invoice/skin/classic",
     "description": "This is the Classic invoice skin for the Nails Invoice & Payments module",
@@ -26,7 +26,7 @@
         {
             "name": "Classic Skin",
             "type": "skin",
-            "forModule": "nailsapp/module-invoice",
+            "forModule": "nails/module-invoice",
             "subType": "invoice",
             "data": {
             }

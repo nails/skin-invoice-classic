@@ -1,12 +1,12 @@
 {
-  "name": "nailsapp-skin-invoice-classic",
+  "name": "nails-skin-invoice-classic",
   "description": "This is the Classic invoice skin for the Nails Invoice & Payments module",
   "main": "",
   "authors": [
     "Nails Dev Team <hello@nailsapp.co.uk>"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/nailsapp/skin-invoice-classic",
+  "homepage": "https://github.com/nails/skin-invoice-classic",
   "moduleType": [],
   "ignore": [
     "**/.*",
