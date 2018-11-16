@@ -42,35 +42,35 @@
                         $paths = array();
                     }
 
-                    if (defined('FCPATH') && defined('BASE_URL')) {
+                    if (defined('NAILS_APP_PATH') && defined('BASE_URL')) {
 
                         $paths[] = array(
-                            FCPATH . 'assets/img/logo.png',
+                            NAILS_APP_PATH . 'assets/img/logo.png',
                             BASE_URL . 'assets/img/logo.png'
                         );
 
                         $paths[] = array(
-                            FCPATH . 'assets/img/logo.jpg',
+                            NAILS_APP_PATH . 'assets/img/logo.jpg',
                             BASE_URL . 'assets/img/logo.jpg'
                         );
 
                         $paths[] = array(
-                            FCPATH . 'assets/img/logo.gif',
+                            NAILS_APP_PATH . 'assets/img/logo.gif',
                             BASE_URL . 'assets/img/logo.gif'
                         );
 
                         $paths[] = array(
-                            FCPATH . 'assets/img/logo/logo.png',
+                            NAILS_APP_PATH . 'assets/img/logo/logo.png',
                             BASE_URL . 'assets/img/logo/logo.png'
                         );
 
                         $paths[] = array(
-                            FCPATH . 'assets/img/logo/logo.jpg',
+                            NAILS_APP_PATH . 'assets/img/logo/logo.jpg',
                             BASE_URL . 'assets/img/logo/logo.jpg'
                         );
 
                         $paths[] = array(
-                            FCPATH . 'assets/img/logo/logo.gif',
+                            NAILS_APP_PATH . 'assets/img/logo/logo.gif',
                             BASE_URL . 'assets/img/logo/logo.gif'
                         );
                     }
