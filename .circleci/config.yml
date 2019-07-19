@@ -48,6 +48,3 @@ jobs:
                   paths:
                       - ./node_modules
                   key: yarn-dependencies-{{ checksum "yarn.lock" }}
-
-            # run tests!
-            - run: ./vendor/bin/phpunit
