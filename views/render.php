@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>
-        <?=$invoice->ref?> - <?=APP_NAME?>
+        <?=$invoice->ref?> - <?=\Nails\Config::get('APP_NAME')?>
     </title>
     <style type="text/css">
         <?php
@@ -42,38 +42,35 @@ if (empty($isPdf)) {
                 $paths = [];
             }
 
-            if (defined('NAILS_APP_PATH') && defined('BASE_URL')) {
+            $paths[] = [
+                \Nails\Config::get('NAILS_APP_PATH') . 'assets/img/logo.png',
+                \Nails\Config::get('BASE_URL') . 'assets/img/logo.png',
+            ];
 
-                $paths[] = [
-                    NAILS_APP_PATH . 'assets/img/logo.png',
-                    BASE_URL . 'assets/img/logo.png',
-                ];
+            $paths[] = [
+                \Nails\Config::get('NAILS_APP_PATH') . 'assets/img/logo.jpg',
+                \Nails\Config::get('BASE_URL') . 'assets/img/logo.jpg',
+            ];
 
-                $paths[] = [
-                    NAILS_APP_PATH . 'assets/img/logo.jpg',
-                    BASE_URL . 'assets/img/logo.jpg',
-                ];
+            $paths[] = [
+                \Nails\Config::get('NAILS_APP_PATH') . 'assets/img/logo.gif',
+                \Nails\Config::get('BASE_URL') . 'assets/img/logo.gif',
+            ];
 
-                $paths[] = [
-                    NAILS_APP_PATH . 'assets/img/logo.gif',
-                    BASE_URL . 'assets/img/logo.gif',
-                ];
+            $paths[] = [
+                \Nails\Config::get('NAILS_APP_PATH') . 'assets/img/logo/logo.png',
+                \Nails\Config::get('BASE_URL') . 'assets/img/logo/logo.png',
+            ];
 
-                $paths[] = [
-                    NAILS_APP_PATH . 'assets/img/logo/logo.png',
-                    BASE_URL . 'assets/img/logo/logo.png',
-                ];
+            $paths[] = [
+                \Nails\Config::get('NAILS_APP_PATH') . 'assets/img/logo/logo.jpg',
+                \Nails\Config::get('BASE_URL') . 'assets/img/logo/logo.jpg',
+            ];
 
-                $paths[] = [
-                    NAILS_APP_PATH . 'assets/img/logo/logo.jpg',
-                    BASE_URL . 'assets/img/logo/logo.jpg',
-                ];
-
-                $paths[] = [
-                    NAILS_APP_PATH . 'assets/img/logo/logo.gif',
-                    BASE_URL . 'assets/img/logo/logo.gif',
-                ];
-            }
+            $paths[] = [
+                \Nails\Config::get('NAILS_APP_PATH') . 'assets/img/logo/logo.gif',
+                \Nails\Config::get('BASE_URL') . 'assets/img/logo/logo.gif',
+            ];
 
             foreach ($paths as $path) {
                 if (is_file($path[0])) {
