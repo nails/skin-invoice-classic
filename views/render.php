@@ -1,288 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>
-        <?=$invoice->ref?> - <?=\Nails\Config::get('APP_NAME')?>
-    </title>
-    <style type="text/css">
-        <?php
-
-        require dirname(__FILE__) . '/../assets/css/styles.min.css';
-
-        ?>
-    </style>
-</head>
-<body class="<?=empty($isPdf) ? 'is-html' : 'is-pdf'?>">
-<?php
-
-if (empty($isPdf)) {
-
-    ?>
-    <div id="paybar">
-        <div id="paybar-container">
-            <a href="<?=$invoice->urls->payment?>" class="btn btn-primary">
-                Pay Now
-            </a>
-            <a href="<?=$invoice->urls->download?>" class="btn btn-primary pull-right">
-                Download
-            </a>
-        </div>
-    </div>
-    <?php
-}
-
-?>
-<div id="container">
-    <header class="clearfix">
-        <div id="logo">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>
+            <?=$invoice->ref?> - <?=\Nails\Config::get('APP_NAME')?>
+        </title>
+        <style type="text/css">
             <?php
 
-            if (!isset($paths)) {
-                $paths = [];
-            }
-
-            $paths[] = [
-                \Nails\Config::get('NAILS_APP_PATH') . 'assets/img/logo.png',
-                \Nails\Config::get('BASE_URL') . 'assets/img/logo.png',
-            ];
-
-            $paths[] = [
-                \Nails\Config::get('NAILS_APP_PATH') . 'assets/img/logo.jpg',
-                \Nails\Config::get('BASE_URL') . 'assets/img/logo.jpg',
-            ];
-
-            $paths[] = [
-                \Nails\Config::get('NAILS_APP_PATH') . 'assets/img/logo.gif',
-                \Nails\Config::get('BASE_URL') . 'assets/img/logo.gif',
-            ];
-
-            $paths[] = [
-                \Nails\Config::get('NAILS_APP_PATH') . 'assets/img/logo/logo.png',
-                \Nails\Config::get('BASE_URL') . 'assets/img/logo/logo.png',
-            ];
-
-            $paths[] = [
-                \Nails\Config::get('NAILS_APP_PATH') . 'assets/img/logo/logo.jpg',
-                \Nails\Config::get('BASE_URL') . 'assets/img/logo/logo.jpg',
-            ];
-
-            $paths[] = [
-                \Nails\Config::get('NAILS_APP_PATH') . 'assets/img/logo/logo.gif',
-                \Nails\Config::get('BASE_URL') . 'assets/img/logo/logo.gif',
-            ];
-
-            foreach ($paths as $path) {
-                if (is_file($path[0])) {
-                    echo '<img src="' . $path[1] . '" />';
-                    break;
-                }
-            }
+            require dirname(__FILE__) . '/../assets/css/styles.min.css';
 
             ?>
-        </div>
-        <h1><?=$invoice->ref?></h1>
-        <div id="state" class="<?=strtolower(str_replace('_', '-', $invoice->state->id))?>">
-            <?=strtoupper($invoice->state->label)?>
-        </div>
-        <table>
-            <tbody>
-                <tr>
-                    <td>
-                        <div id="project">
-                            <div>
-                                <span>CUSTOMER</span>
-                                <?=$invoice->customer->label?>
-                            </div>
-                            <?php
-
-                            if (!empty($invoice->customer->vat_number)) {
-
-                                ?>
-                                <div>
-                                    <span>VAT NUMBER</span>
-                                    <?=$invoice->customer->vat_number?>
-                                </div>
-                                <?php
-                            }
-
-                            $aAddress = [
-                                $invoice->customer->billing_address->line_1,
-                                $invoice->customer->billing_address->line_2,
-                                $invoice->customer->billing_address->town,
-                                $invoice->customer->billing_address->county,
-                                $invoice->customer->billing_address->postcode,
-                                $invoice->customer->billing_address->country,
-                            ];
-                            $aAddress = array_filter($aAddress);
-
-                            if (!empty($aAddress)) {
-
-                                ?>
-                                <div>
-                                    <span>ADDRESS</span>
-                                    <?=implode('<br />', $aAddress)?>
-                                </div>
-                                <?php
-                            }
-
-                            ?>
-                            <div>
-                                <span>EMAIL</span>
-                                <?php
-
-                                if (!empty($invoice->customer->billing_email)) {
-
-                                    echo $invoice->customer->billing_email;
-
-                                } else {
-
-                                    echo $invoice->customer->email;
-                                }
-
-                                ?>
-                            </div>
-                            <div>
-                                <span>DATE</span>
-                                <?=$invoice->dated->formatted?>
-                            </div>
-                            <div>
-                                <span>DUE DATE</span>
-                                <?=$invoice->due->formatted?>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div id="company" class="clearfix">
-                            <?=$business->name ? '<div>' . $business->name . '</div>' : ''?>
-                            <?=$business->address ? '<div>' . nl2br($business->address) . '</div>' : ''?>
-                            <?=$business->telephone ? '<div>' . $business->telephone . '</div>' : ''?>
-                            <?=$business->email ? '<div>' . $business->email . '</div>' : ''?>
-                            <?=$business->vat_number ? '<div>VAT: ' . $business->vat_number . '</div>' : ''?>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </header>
-    <main>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th class="desc">DESCRIPTION</th>
-                    <th class="price">PRICE</th>
-                    <th class="qty">QTY</th>
-                    <th class="tax">TAX</th>
-                    <th class="total">TOTAL</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-
-                foreach ($invoice->items->data as $oItem) {
-
-                    ?>
-                    <tr>
-                        <td class="desc">
-                            <?=$oItem->label?>
-                            <div><?=$oItem->body?></div>
-                        </td>
-                        <td class="price">
-                            <?=html_entity_decode($oItem->unit_cost->formatted)?>
-                        </td>
-                        <td class="qty">
-                            <?php
-
-                            echo $oItem->quantity;
-                            if ($oItem->unit->id !== 'NONE') {
-                                echo ' ' . $oItem->unit->label;
-                            }
-
-                            ?>
-                        </td>
-                        <td class="tax">
-                            <?=!empty($oItem->tax) ? $oItem->tax->rate : 0?>%
-                        </td>
-                        <td class="total">
-                            <?=html_entity_decode($oItem->totals->formatted->grand)?>
-                        </td>
-                    </tr>
-                    <?php
-                }
-
-                ?>
-                <tr class="total sub">
-                    <td colspan="4">SUBTOTAL</td>
-                    <td class="total">
-                        <?=$invoice->totals->formatted->sub?>
-                    </td>
-                </tr>
-                <tr class="total tax">
-                    <td colspan="4">TAX</td>
-                    <td class="total">
-                        <?=$invoice->totals->formatted->tax?>
-                    </td>
-                </tr>
-                <tr class="total grand">
-                    <td colspan="4" class="grand total">GRAND TOTAL</td>
-                    <td class="grand total">
-                        <?=$invoice->totals->formatted->grand?>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        </style>
+    </head>
+    <body class="<?=empty($isPdf) ? 'is-html' : 'is-pdf'?>">
         <?php
 
-        if ($invoice->refunds->count) {
-
+        if (empty($isPdf)) {
             ?>
-            <div class="refunds">
-                <div class="refunds__header">REFUNDS</div>
+            <div id="paybar">
+                <div id="paybar-container">
+                    <a href="<?=$invoice->urls->payment?>" class="btn btn-primary">
+                        Pay Now
+                    </a>
+                    <a href="<?=$invoice->urls->download?>" class="btn btn-primary pull-right">
+                        Download
+                    </a>
+                </div>
+            </div>
+            <?php
+        }
+
+        ?>
+        <div id="container">
+            <header class="clearfix">
+                <div id="logo">
+                    <?php
+
+                    $sLogo = logoDiscover();
+                    if (!empty($sLogo)) {
+                        echo img($sLogo);
+                    }
+
+                    ?>
+                </div>
+                <h1><?=$invoice->ref?></h1>
+                <div id="state" class="<?=strtolower(str_replace('_', '-', $invoice->state->id))?>">
+                    <?=strtoupper($invoice->state->label)?>
+                </div>
                 <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div id="project">
+                                    <div>
+                                        <span>CUSTOMER</span>
+                                        <?=$invoice->customer->label?>
+                                    </div>
+                                    <?php
+
+                                    if (!empty($invoice->customer->vat_number)) {
+
+                                        ?>
+                                        <div>
+                                            <span>VAT NUMBER</span>
+                                            <?=$invoice->customer->vat_number?>
+                                        </div>
+                                        <?php
+                                    }
+
+                                    $oBillingAddress = $invoice->billingAddress();
+
+                                    if (!empty($oBillingAddress)) {
+                                        ?>
+                                        <div>
+                                            <span>BILLING ADDRESS</span>
+                                            <?=$oBillingAddress->formatted()->withSeparator('<br />')?>
+                                        </div>
+                                        <?php
+                                    }
+
+                                    $oDeliveryAddress = $invoice->deliveryAddress();
+
+                                    if (!empty($oDeliveryAddress)) {
+                                        ?>
+                                        <div>
+                                            <span>DELIVERY ADDRESS</span>
+                                            <?=$oDeliveryAddress->formatted()->withSeparator('<br />')?>
+                                        </div>
+                                        <?php
+                                    }
+
+                                    ?>
+                                    <div>
+                                        <span>EMAIL</span>
+                                        <?=$invoice->customer->billing_email ?: $invoice->customer->email?>
+                                    </div>
+                                    <div>
+                                        <span>DATE</span>
+                                        <?=$invoice->dated->formatted?>
+                                    </div>
+                                    <div>
+                                        <span>DUE DATE</span>
+                                        <?=$invoice->due->formatted?>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="company" class="clearfix">
+                                    <?=$business->name ? '<div>' . $business->name . '</div>' : ''?>
+                                    <?=$business->address ? '<div>' . nl2br($business->address) . '</div>' : ''?>
+                                    <?=$business->telephone ? '<div>' . $business->telephone . '</div>' : ''?>
+                                    <?=$business->email ? '<div>' . $business->email . '</div>' : ''?>
+                                    <?=$business->vat_number ? '<div>VAT: ' . $business->vat_number . '</div>' : ''?>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </header>
+            <main>
+                <table class="table">
                     <thead>
                         <tr>
-                            <th class="text-left">Reference</th>
-                            <th class="text-left">Reason</th>
-                            <th>Amount</th>
-                            <th>Date</th>
+                            <th class="desc">DESCRIPTION</th>
+                            <th class="price">PRICE</th>
+                            <th class="qty">QTY</th>
+                            <th class="tax">TAX</th>
+                            <th class="total">TOTAL</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
 
-                        foreach ($invoice->refunds->data as $oRefund) {
+                        foreach ($invoice->items->data as $oItem) {
 
-                            if (in_array($oRefund->status->id, ['COMPLETE', 'PROCESSING'])) {
-                                ?>
-                                <tr>
-                                    <td class="text-left"><?=$oRefund->ref?></td>
-                                    <td class="text-left"><?=$oRefund->reason?></td>
-                                    <td><?=$oRefund->amount->formatted?></td>
-                                    <td><?=toUserDateTime($oRefund->created)?></td>
-                                </tr>
-                                <?php
-                            }
+                            ?>
+                            <tr>
+                                <td class="desc">
+                                    <?=$oItem->label?>
+                                    <div><?=$oItem->body?></div>
+                                </td>
+                                <td class="price">
+                                    <?=html_entity_decode($oItem->unit_cost->formatted)?>
+                                </td>
+                                <td class="qty">
+                                    <?php
+
+                                    echo $oItem->quantity;
+                                    if ($oItem->unit->id !== 'NONE') {
+                                        echo ' ' . $oItem->unit->label;
+                                    }
+
+                                    ?>
+                                </td>
+                                <td class="tax">
+                                    <?=!empty($oItem->tax) ? $oItem->tax->rate : 0?>%
+                                </td>
+                                <td class="total">
+                                    <?=html_entity_decode($oItem->totals->formatted->grand)?>
+                                </td>
+                            </tr>
+                            <?php
                         }
 
                         ?>
+                        <tr class="total sub">
+                            <td colspan="4">SUBTOTAL</td>
+                            <td class="total">
+                                <?=$invoice->totals->formatted->sub?>
+                            </td>
+                        </tr>
+                        <tr class="total tax">
+                            <td colspan="4">TAX</td>
+                            <td class="total">
+                                <?=$invoice->totals->formatted->tax?>
+                            </td>
+                        </tr>
+                        <tr class="total grand">
+                            <td colspan="4" class="grand total">GRAND TOTAL</td>
+                            <td class="grand total">
+                                <?=$invoice->totals->formatted->grand?>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
-            </div>
-            <?php
-        }
+                <?php
 
-        if (!empty($invoice->additional_text)) {
+                if ($invoice->refunds->count) {
 
-            ?>
-            <div class="notices">
-                <div class="notices__header">ADDITIONAL INFORMATION</div>
-                <div class="notices__body"><?=$invoice->additional_text?></div>
-            </div>
-            <?php
-        }
+                    ?>
+                    <div class="refunds">
+                        <div class="refunds__header">REFUNDS</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="text-left">Reference</th>
+                                    <th class="text-left">Reason</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
 
-        ?>
-    </main>
-</div>
-</body>
+                                foreach ($invoice->refunds->data as $oRefund) {
+
+                                    if (in_array($oRefund->status->id, ['COMPLETE', 'PROCESSING'])) {
+                                        ?>
+                                        <tr>
+                                            <td class="text-left"><?=$oRefund->ref?></td>
+                                            <td class="text-left"><?=$oRefund->reason?></td>
+                                            <td><?=$oRefund->amount->formatted?></td>
+                                            <td><?=toUserDateTime($oRefund->created)?></td>
+                                        </tr>
+                                        <?php
+                                    }
+                                }
+
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <?php
+                }
+
+                if (!empty($invoice->additional_text)) {
+
+                    ?>
+                    <div class="notices">
+                        <div class="notices__header">ADDITIONAL INFORMATION</div>
+                        <div class="notices__body"><?=$invoice->additional_text?></div>
+                    </div>
+                    <?php
+                }
+
+                ?>
+            </main>
+        </div>
+    </body>
 </html>
