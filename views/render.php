@@ -7,9 +7,7 @@
         </title>
         <style type="text/css">
             <?php
-
             require dirname(__FILE__) . '/../assets/css/styles.min.css';
-
             ?>
         </style>
     </head>
@@ -34,16 +32,14 @@
         ?>
         <div id="container">
             <header class="clearfix">
-                <div id="logo">
-                    <?php
+                <?php
 
-                    $sLogo = logoDiscover();
-                    if (!empty($sLogo)) {
-                        echo img($sLogo);
-                    }
+                $sLogo = logoDiscover();
+                if (!empty($sLogo)) {
+                    echo '<div id="logo">' . img($sLogo) . '</div>';
+                }
 
-                    ?>
-                </div>
+                ?>
                 <h1><?=$invoice->ref?></h1>
                 <div id="state" class="<?=strtolower(str_replace('_', '-', $invoice->state->id))?>">
                     <?=strtoupper($invoice->state->label)?>
@@ -51,70 +47,81 @@
                 <table>
                     <tbody>
                         <tr>
-                            <td>
-                                <div id="project">
-                                    <div>
-                                        <span>CUSTOMER</span>
-                                        <?=$invoice->customer->label?>
-                                    </div>
-                                    <?php
+                            <td class="project-details">
+                                <div>
+                                    <span>CUSTOMER</span>
+                                    <?=$invoice->customer->label?>
+                                </div>
+                                <?php
 
-                                    if (!empty($invoice->customer->vat_number)) {
-
-                                        ?>
-                                        <div>
-                                            <span>VAT NUMBER</span>
-                                            <?=$invoice->customer->vat_number?>
-                                        </div>
-                                        <?php
-                                    }
-
-                                    $oBillingAddress = $invoice->billingAddress();
-
-                                    if (!empty($oBillingAddress)) {
-                                        ?>
-                                        <div>
-                                            <span>BILLING ADDRESS</span>
-                                            <?=$oBillingAddress->formatted()->withSeparator('<br />')?>
-                                        </div>
-                                        <?php
-                                    }
-
-                                    $oDeliveryAddress = $invoice->deliveryAddress();
-
-                                    if (!empty($oDeliveryAddress)) {
-                                        ?>
-                                        <div>
-                                            <span>DELIVERY ADDRESS</span>
-                                            <?=$oDeliveryAddress->formatted()->withSeparator('<br />')?>
-                                        </div>
-                                        <?php
-                                    }
-
+                                if (!empty($invoice->customer->vat_number)) {
                                     ?>
                                     <div>
-                                        <span>EMAIL</span>
-                                        <?=$invoice->customer->billing_email ?: $invoice->customer->email?>
+                                        <span>VAT NUMBER</span>
+                                        <?=$invoice->customer->vat_number?>
                                     </div>
-                                    <div>
-                                        <span>DATE</span>
-                                        <?=$invoice->dated->formatted?>
-                                    </div>
-                                    <div>
-                                        <span>DUE DATE</span>
-                                        <?=$invoice->due->formatted?>
-                                    </div>
+                                    <?php
+                                }
+
+                                ?>
+                                <div>
+                                    <span>EMAIL</span>
+                                    <?=$invoice->customer->billing_email ?: $invoice->customer->email?>
+                                </div>
+                                <div>
+                                    <span>DATE</span>
+                                    <?=$invoice->dated->formatted?>
+                                </div>
+                                <div>
+                                    <span>DUE DATE</span>
+                                    <?=$invoice->due->formatted?>
                                 </div>
                             </td>
-                            <td>
-                                <div id="company" class="clearfix">
-                                    <?=$business->name ? '<div>' . $business->name . '</div>' : ''?>
-                                    <?=$business->address ? '<div>' . nl2br($business->address) . '</div>' : ''?>
-                                    <?=$business->telephone ? '<div>' . $business->telephone . '</div>' : ''?>
-                                    <?=$business->email ? '<div>' . $business->email . '</div>' : ''?>
-                                    <?=$business->vat_number ? '<div>VAT: ' . $business->vat_number . '</div>' : ''?>
-                                </div>
-                            </td>
+                            <?php
+
+                            $oBillingAddress = $invoice->billingAddress();
+                            if (!empty($oBillingAddress)) {
+                                ?>
+                                <td class="project-details">
+                                    <div>
+                                        <span>BILLING<br>ADDRESS</span>
+                                        <?=$oBillingAddress->formatted()->withSeparator('<br />')?>
+                                    </div>
+                                </td>
+                                <?php
+                            }
+
+                            $oDeliveryAddress = $invoice->deliveryAddress();
+                            if (!empty($oDeliveryAddress)) {
+                                ?>
+                                <td class="project-details">
+                                    <div>
+                                        <span>DELIVERY<br>ADDRESS</span>
+                                        <?=$oDeliveryAddress->formatted()->withSeparator('<br />')?>
+                                    </div>
+                                </td>
+                                <?php
+                            }
+
+                            $aCompanyDetails = array_filter([
+                                $business->name ? '<div>' . $business->name . '</div>' : null,
+                                $business->address ? '<div>' . nl2br($business->address) . '</div>' : null,
+                                $business->telephone ? '<div>' . $business->telephone . '</div>' : null,
+                                $business->email ? '<div>' . $business->email . '</div>' : null,
+                                $business->vat_number ? '<div>VAT: ' . $business->vat_number . '</div>' : null,
+                            ]);
+
+                            if (!empty($aCompanyDetails)) {
+                                ?>
+                                <td>
+                                    <div class="company-details clearfix">
+                                        <?=implode(PHP_EOL, $aCompanyDetails)?>
+                                    </div>
+                                </td>
+                                <?php
+                            }
+
+                            ?>
                         </tr>
                     </tbody>
                 </table>
@@ -134,7 +141,6 @@
                         <?php
 
                         foreach ($invoice->items->data as $oItem) {
-
                             ?>
                             <tr>
                                 <td class="desc">
@@ -188,7 +194,6 @@
                 <?php
 
                 if ($invoice->refunds->count) {
-
                     ?>
                     <div class="refunds">
                         <div class="refunds__header">REFUNDS</div>
@@ -205,7 +210,6 @@
                                 <?php
 
                                 foreach ($invoice->refunds->data as $oRefund) {
-
                                     if (in_array($oRefund->status->id, ['COMPLETE', 'PROCESSING'])) {
                                         ?>
                                         <tr>
@@ -226,7 +230,6 @@
                 }
 
                 if (!empty($invoice->additional_text)) {
-
                     ?>
                     <div class="notices">
                         <div class="notices__header">ADDITIONAL INFORMATION</div>
