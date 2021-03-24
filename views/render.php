@@ -1,3 +1,8 @@
+<?php
+
+use Nails\Common\Helper\Inflector;
+
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -151,14 +156,8 @@
                                     <?=html_entity_decode($oItem->unit_cost->formatted)?>
                                 </td>
                                 <td class="qty">
-                                    <?php
-
-                                    echo $oItem->quantity;
-                                    if ($oItem->unit->id !== 'NONE') {
-                                        echo ' ' . $oItem->unit->label;
-                                    }
-
-                                    ?>
+                                    <?=$oItem->quantity?>
+                                    <?=$oItem->unit->id !== 'NONE' ? Inflector::pluralise($oItem->quantity, $oItem->unit->label) : ''?>
                                 </td>
                                 <td class="tax">
                                     <?=!empty($oItem->tax) ? $oItem->tax->rate : 0?>%
