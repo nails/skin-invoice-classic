@@ -23,9 +23,15 @@ use Nails\Common\Helper\Inflector;
             ?>
             <div id="paybar">
                 <div id="paybar-container">
-                    <a href="<?=$invoice->urls->payment?>" class="btn btn-primary">
-                        Pay Now
-                    </a>
+                    <?php
+                    if ($invoice->isDue()) {
+                        ?>
+                        <a href="<?=$invoice->urls->payment?>" class="btn btn-primary">
+                            Pay Now
+                        </a>
+                        <?php
+                    }
+                    ?>
                     <a href="<?=$invoice->urls->download?>" class="btn btn-primary pull-right">
                         Download
                     </a>
