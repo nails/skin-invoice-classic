@@ -20,6 +20,6 @@
         "watch": "webpack --watch"
     },
     "dependencies": {
-        "bootstrap-sass": "^3.3"
+        "bootstrap-sass": "^3.4"
     }
 }
