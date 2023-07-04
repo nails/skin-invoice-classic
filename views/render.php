@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @var \stdClass                       $business
+ * @var \Nails\Invoice\Resource\Invoice $invoice
+ */
+
 use Nails\Common\Helper\Inflector;
 
 ?>
@@ -151,6 +156,7 @@ use Nails\Common\Helper\Inflector;
                     <tbody>
                         <?php
 
+                        /** @var \Nails\Invoice\Resource\Invoice\Item $oItem */
                         foreach ($invoice->items->data as $oItem) {
                             ?>
                             <tr>
@@ -166,7 +172,7 @@ use Nails\Common\Helper\Inflector;
                                     <?=$oItem->unit->id !== 'NONE' ? Inflector::pluralise($oItem->quantity, $oItem->unit->label) : ''?>
                                 </td>
                                 <td class="tax">
-                                    <?=!empty($oItem->tax) ? $oItem->tax->rate : 0?>%
+                                    <?=$oItem->tax->rate?>%
                                 </td>
                                 <td class="total">
                                     <?=html_entity_decode($oItem->totals->formatted->grand)?>
@@ -214,6 +220,7 @@ use Nails\Common\Helper\Inflector;
                             <tbody>
                                 <?php
 
+                                /** @var \Nails\Invoice\Resource\Refund $oRefund */
                                 foreach ($invoice->refunds->data as $oRefund) {
                                     if (in_array($oRefund->status->id, ['COMPLETE', 'PROCESSING'])) {
                                         ?>

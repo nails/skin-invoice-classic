@@ -1,0 +1,7 @@
+parameters:
+    level: 9
+    paths:
+        - ../views
+        - ../tests
+    scanDirectories:
+        - ../vendor/nails/common/helpers
