@@ -13,7 +13,7 @@ use Nails\Common\Helper\Inflector;
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>
-            <?=$invoice->ref?> - <?=\Nails\Config::get('APP_NAME')?>
+            <?=$invoice->ref?> - <?=\Nails\Factory::service('MetaData')->getAppName()?>
         </title>
         <style type="text/css">
             <?php
