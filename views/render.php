@@ -15,11 +15,13 @@ use Nails\Common\Helper\Inflector;
         <title>
             <?=$invoice->ref?> - <?=\Nails\Factory::service('MetaData')->getAppName()?>
         </title>
-        <style type="text/css">
-            <?php
-            require dirname(__FILE__) . '/../assets/css/styles.min.css';
-            ?>
-        </style>
+        <?php
+
+        echo styleOpen();
+        require dirname(__FILE__) . '/../assets/css/styles.min.css';
+
+        echo styleClose();
+        ?>
     </head>
     <body class="<?=empty($isPdf) ? 'is-html' : 'is-pdf'?>">
         <?php
