@@ -21,6 +21,7 @@
     "prefer-stable": true,
     "require":
     {
+        "php": ">=8.3",
         "nails/module-invoice": "dev-develop"
     },
     "require-dev": {
